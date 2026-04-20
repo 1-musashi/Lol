@@ -1,0 +1,2455 @@
+:root {
+  --bg-main: #050308;
+  --bg-card: #120814;
+  --bg-card-alt: #1b0b1f;
+  --accent: #e63946;
+  --accent-soft: #ff7b7b;
+  --text-main: #f5e9dc;
+  --text-muted: #b89c8a;
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.6);
+  --border-glow: 0 0 12px rgba(230, 57, 70, 0.7);
+  --transition-fast: 0.25s ease;
+  --transition-med: 0.4s ease;
+}
+
+/* إعداد عام */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Cairo", system-ui, sans-serif;
+  background: var(--bg-main);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* شاشة الافتتاح */
+#intro-screen {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #2b0b0f 0%, #050308 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: introFadeOut 3.4s forwards;
+}
+
+#intro-screen.hidden {
+  display: none;
+}
+
+.intro-content {
+  text-align: center;
+  position: relative;
+}
+
+/* 👇 أضف هذا هنا مباشرة */
+.intro-stack {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+/* تمركز العناصر داخل شاشة الترحيب */
+
+.intro-griffin,
+.intro-title {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-griffin {
+  position: absolute; /* مهم جدًا */
+  width: 150px;
+  opacity: 0;
+
+  /* الآن سيعمل التحريك */
+  transform: translateX(0%) translateY(0%) scale(0.6);
+  transform-origin: center;
+
+  animation: griffinAppearBurn 1.8s forwards ease-out;
+}
+
+/* حركة الظهور السينمائية */
+@keyframes griffinAppearBurn {
+  0% {
+    opacity: 0;
+    transform: translateY(20%) scale(0.6);
+    filter: drop-shadow(0 0 0px rgba(255, 80, 80, 0));
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(-5%) scale(1.05);
+    filter: drop-shadow(0 0 18px rgba(255, 80, 80, 0.45));
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0%) scale(1);
+    filter: drop-shadow(0 0 8px rgba(255, 80, 80, 0.25));
+  }
+}
+
+.intro-title {
+  margin: 0;
+  opacity: 0;
+  transform: scale(0.9);
+  animation: titleFromAshes 1.6s 1.8s forwards;
+  margin: 0; /* مهم جدًا */
+  
+  margin-top: 16px;
+  font-family: "Cinzel", serif;
+  font-size: 2.1rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-soft);
+}
+
+.intro-ashes {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 160px;
+  height: 80px;
+  transform: translate(-50%, -10%);
+  background: radial-gradient(circle at center, rgba(255, 120, 80, 0.3) 0, transparent 60%);
+  opacity: 0;
+  filter: blur(6px);
+  animation: ashesRise 1.6s 1.4s forwards;
+}
+
+/* كانفس الشرار */
+#embers-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(255, 80, 80, 0.18) 0, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(255, 120, 80, 0.18) 0, transparent 55%),
+    radial-gradient(circle at 50% 100%, rgba(255, 40, 40, 0.2) 0, transparent 60%),
+    #050308;
+}
+
+
+/* الشريط العلوي */
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to bottom, #120814, #050308);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  position: relative;
+}
+.top-bar {
+  position: fixed;
+}
+
+/* زر الشرطات العتيق */
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  cursor: pointer;
+  padding: 0;
+}
+
+.ancient-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(120, 20, 30, 0.6);
+  background: radial-gradient(circle at 30% 20%, #2a0d10 0, #0a0406 60%);
+  box-shadow:
+    0 0 6px rgba(120, 20, 30, 0.6),
+    0 0 12px rgba(0, 0, 0, 0.9);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* عند التحويم */
+.ancient-btn:hover {
+  box-shadow:
+    0 0 10px rgba(180, 30, 40, 0.8),
+    0 0 18px rgba(120, 20, 30, 0.6);
+  transform: scale(1.05);
+}
+
+/* عند الضغط */
+.ancient-btn:active {
+  transform: scale(0.92);
+}
+
+.ancient-btn .bar {
+  width: 18px;
+  height: 2px;
+  background: linear-gradient(to right, #f5e9dc, #b89c8a);
+  border-radius: 999px;
+}
+
+.ancient-btn:hover {
+  transform: translateY(-1px);
+  background: radial-gradient(circle at 30% 20%, #4a2f26 0, #120814 60%);
+  box-shadow: var(--border-glow);
+}
+
+/* مجموعة الشعار والواتساب يمين */
+.top-right-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.top-whatsapp img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.top-whatsapp img:hover {
+  transform: scale(1.05);
+  box-shadow: var(--border-glow);
+}
+
+/* القائمة الجانبية */
+#side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 25%;
+  max-width: 240px;
+  background: linear-gradient(to bottom, #1a0508, #0a0203 70%);
+  border-right: 2px solid rgba(150, 20, 30, 0.55);
+  box-shadow: 6px 0 18px rgba(0, 0, 0, 0.85);
+  padding: 20px 14px;
+  transform: translateX(-100%);
+  transition: transform 0.45s ease, box-shadow 0.4s ease;
+  z-index: 999;
+}
+
+/* عند الفتح */
+#side-menu.open {
+  transform: translateX(0);
+  box-shadow: 10px 0 25px rgba(0, 0, 0, 0.9);
+}
+
+#side-menu.open {
+  transform: translateX(0);
+}
+
+#side-menu ul {
+  list-style: none;
+  margin-top: 40px;
+}
+
+#side-menu li + li {
+  margin-top: 10px;
+}
+
+/* أزرار القائمة */
+.menu-item {
+  width: 100%;
+  text-align: start;
+  background: linear-gradient(to right, #2a0a0f, #150508);
+  border: 1px solid rgba(150, 20, 30, 0.45);
+  color: #f3d9d2;
+  padding: 12px 14px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: center;   /* توسيط أفقي */
+  align-items: center;       /* توسيط عمودي */
+  text-align: center;        /* توسيط النص */
+}
+
+.menu-item {
+  font-family: "Cairo", "Tajawal", sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.3px;
+}
+
+/* عند التحويم */
+.menu-item:hover {
+  background: linear-gradient(to right, #4a0f17, #2a0a0f);
+  transform: translateX(6px);
+  box-shadow:
+    0 0 10px rgba(180, 30, 40, 0.7),
+    0 0 18px rgba(120, 20, 30, 0.5);
+}
+
+/* عند الضغط */
+.menu-item:active {
+  transform: scale(0.96);
+  box-shadow: 0 0 6px rgba(255, 60, 60, 0.6);
+}
+
+.menu-item:hover,
+.menu-item.active {
+  background: linear-gradient(to right, #2a0f2f, #1b0b1f);
+  transform: translateX(3px);
+  box-shadow: var(--border-glow);
+}
+
+/* زر الإغلاق الجديد في الأسفل */
+.close-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 60%;
+  margin: 20px auto 10px auto;
+
+  padding: 10px 0;
+  border-radius: 8px;
+
+  background: linear-gradient(to right, #3a0a0f, #1a0508);
+  border: 1px solid rgba(150, 20, 30, 0.5);
+
+  color: #e8d6d0;
+  font-size: 1.3rem;
+  cursor: pointer;
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+/* تأثير عند التحويم */
+.close-btn:hover {
+  background: linear-gradient(to right, #5a0f17, #2a0a0f);
+  box-shadow: 0 0 12px rgba(180, 30, 40, 0.7);
+  transform: scale(1.05);
+}
+
+/* تأثير عند الضغط */
+.close-btn:active {
+  transform: scale(0.92);
+}
+
+/* المحتوى الرئيسي */
+main {
+  padding-top: 70px;
+  padding-inline: 16px;
+  max-width: 1100px;
+  margin: 0 auto 80px;
+}
+
+/* قسم البداية */
+.hero-section {
+  text-align: center;
+  padding: 40px 10px 30px;
+}
+
+.hero-logo-wrap {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-video {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 18px rgba(230, 57, 70, 0.8);
+}
+
+.hero-title {
+  font-family: "Cinzel", serif;
+  font-size: 2.1rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-soft);
+}
+
+.hero-story {
+  margin-top: 18px;
+  max-width: 650px;
+  margin-inline: auto;
+  color: var(--text-muted);
+  line-height: 1.8;
+  font-size: 0.98rem;
+}
+
+/* فاصل */
+.section-divider {
+  border: none;
+  border-top: 1px solid rgba(184, 156, 138, 0.3);
+  margin: 5px auto;
+  max-width: 720px;
+}
+
+/* قسم النخبة */
+.elite-section {
+  padding: 10px 0 20px;
+}
+
+.section-title {
+  text-align: center; /* يجعل السطرين في المنتصف */
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fadeDown 1s ease forwards;
+}
+
+/* العربية */
+.title-ar {
+  display: block;
+  text-align: center;
+  font-family: "Cairo", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ffffff, #ffd6d6, #ffebeb);
+  -webkit-background-clip: text;
+  color: transparent;
+
+  /* 👇 هنا تتحكم بكمية البكسلات أسفل السطر */
+  margin-bottom: 3px;
+
+  /* التوهج الناري */
+  text-shadow:
+    0 0 6px rgba(180, 20, 40, 0.8),
+    0 0 14px rgba(255, 60, 20, 0.5),
+    0 0 22px rgba(120, 0, 20, 0.4);
+
+  animation: homeTitleGlow 3s infinite ease-in-out;
+}
+
+.title-en {
+  display: block;
+  text-align: center;
+  font-family: "Cinzel", serif;
+  font-size: 1.7rem;
+  font-weight: 600;
+  background: linear-gradient(315deg, #ffebeb, #ffd6d6, #ffffff);
+  -webkit-background-clip: text;
+  color: transparent;
+
+  /* 👇 هنا تتحكم بكمية البكسلات أسفل السطر الإنجليزي */
+  margin-bottom: 20px;
+
+  /* التوهج الناري */
+  text-shadow:
+    0 0 6px rgba(180, 20, 40, 0.8),
+    0 0 14px rgba(255, 60, 20, 0.5),
+    0 0 22px rgba(120, 0, 20, 0.4);
+
+  animation: homeTitleGlow 3s infinite ease-in-out;
+}
+
+@keyframes fadeDown {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.elite-card {
+  overflow: visible;
+  background: linear-gradient(135deg, var(--bg-card), var(--bg-card-alt));
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(230, 57, 70, 0.35);
+  cursor: pointer;
+  overflow: visible; /* 👈 يجب أن يكون هكذا */
+
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.elite-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--border-glow);
+  border-color: rgba(255, 140, 140, 0.7);
+}
+
+.elite-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.elite-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.elite-tag {
+  display: flex;                 /* ← يجعل النص في الوسط */
+  justify-content: center;       /* ← وسط أفقي */
+  align-items: center;           /* ← وسط عمودي */
+
+  width: fit-content;            /* ← يمكنك تغييره لعرض ثابت */
+  min-width: 80px;               /* ← تحكم بالعرض الأدنى */
+  height: 30px;                  /* ← تحكم بالارتفاع */
+
+  padding: 0 12px;               /* ← تحكم بالمسافة الداخلية */
+  margin-bottom: 6px;
+
+  font-size: 0.78rem;            /* ← تحكم بحجم الخط */
+  font-weight: 600;
+  color: rgba(255, 230, 240, 0.85);
+
+  background: rgba(230, 57, 70, 0.18);
+  border: 1px solid rgba(230, 57, 70, 0.35);
+  border-radius: 6px;
+
+  box-shadow: 0 0 6px rgba(230, 57, 70, 0.25);
+}
+
+.elite-name {
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 6px 10px; /* ← مسافة داخلية */
+  border: 1px solid rgba(230, 57, 70, 0.35); /* ← الإطار */
+  border-radius: 8px; /* ← انحناء الإطار */
+  background: rgba(255, 255, 255, 0.03); /* ← خلفية خفيفة */
+  box-shadow: inset 0 0 8px rgba(230, 57, 70, 0.15); /* ← توهج داخلي */
+  width: fit-content; /* ← يجعل الإطار يلتف حول الاسم فقط */
+}
+
+/* الإطار الثابت حول الأيقونة */
+.elite-icon {
+  width: 1.6rem;          /* حجم الإطار ثابت */
+  height: 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-soft);
+}
+
+/* محتوى الـ SVG داخل الإطار */
+.elite-svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+  display: block;
+
+  /* هنا التكبير الحقيقي */
+  transform: scale(1.5);          /* كبّر أو صغّر الرقم */
+  transform-origin: center center; /* يكبّر من المنتصف */
+}
+
+.elite-image-wrap img {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: var(--shadow-soft);
+}
+
+.elite-image-wrap {
+  width: 115px;               /* ← نفس عرض الصورة */
+  height: 115px;              /* ← نفس ارتفاع الصورة */
+  padding: 4px;               /* ← سمك الإطار */
+  border-radius: 12px;        /* ← أكبر قليلاً ليظهر الإطار */
+  border: 1px solid rgba(230, 57, 70, 0.35);
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: inset 0 0 10px rgba(230, 57, 70, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.elite-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-med);
+  margin-top: 10px;
+}
+
+.elite-card[data-expanded="true"] .elite-details {
+  max-height: 260px;
+}
+
+.elite-desc-frame {
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: radial-gradient(circle at top, rgba(27, 11, 31, 0.9) 0, rgba(18, 8, 20, 0.9) 60%);
+  margin-bottom: 8px;
+  position: relative;
+}
+
+/* إطار الوصف */
+.elite-desc-frame {
+  border: 1px solid rgba(184, 156, 138, 0.6);
+  border-radius: 10px;
+  padding: 14px 10px 10px; /* زيادة padding للأعلى مثل feature-card */
+  background: radial-gradient(circle at top, rgba(27, 11, 31, 0.9) 0, rgba(18, 8, 20, 0.9) 60%);
+  margin-bottom: 8px;
+  position: relative;
+  overflow: visible; /* 👈 أهم سطر */
+}
+
+/* عنوان وصف الشخصية */
+.elite-desc-title {
+  position: absolute;
+  top: -9px; /* ارفع أو اخفض كما تريد */
+  right: 14px;
+
+  background: #120814;
+  padding: 2px 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+  border-radius: 4px;
+
+  z-index: 10;
+}
+
+.elite-desc-title::after {
+  background: linear-gradient(90deg, rgba(255,255,255,0.25), transparent);
+}
+
+.elite-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.elite-powers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.power-tag {
+  font-size: 0.78rem;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(230, 57, 70, 0.6);
+  background: rgba(18, 8, 20, 0.8);
+}
+
+/* قسم الأبطال (سلايدر أفقي) */
+.heroes-section {
+  padding: 10px 0 20px;
+}
+
+/* الغلاف العام */
+.heroes-slider-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-icon {
+  font-size: 3.2rem; /* تكبير الأيقونة */
+  color: var(--accent-soft);
+  margin-bottom: 6px;
+  text-shadow: 0 0 12px rgba(230,57,70,0.45);
+}
+
+.hero-icon-svg {
+  width: 3.2rem;
+  height: 3.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--accent-soft);
+  margin-bottom: 6px;
+
+  text-shadow: 0 0 12px rgba(230,57,70,0.45);
+  filter: drop-shadow(0 0 10px rgba(120, 0, 30, 0.55));
+
+  /* لا نضع transform هنا */
+}
+
+.dragon-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  fill: url(#dragonGradient);
+
+  /* التحويل الأساسي */
+  transform: translateX(15%) translateY(52%) scale(4.95);
+  transform-origin: center;
+
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+.hero-icon-svg:hover .dragon-svg {
+  transform: translateX(15%) translateY(52%) scale(5.25);
+filter: brightness(1.25) saturate(1.4);
+}
+
+.hero-icon-svg:hover {
+  transform: scale(1.12); /* يكبر الإطار قليلاً */
+  filter: drop-shadow(0 0 16px rgba(150, 0, 40, 0.75));
+}
+
+.hero-icon-svg:hover .dragon-svg {
+  filter: brightness(1.25) saturate(1.4);
+}
+
+/* المسار */
+.heroes-track {
+  display: flex;
+  gap: 20px;
+  transition: transform 0.35s ease;
+  will-change: transform;
+}
+
+.heroes-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* البطاقة */
+.hero-card {
+  width: 210px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  padding: 12px;
+
+  background: linear-gradient(145deg, #1a0f1d, #120814);
+  border: 1px solid rgba(230, 57, 70, 0.45);
+
+  box-shadow:
+    0 0 12px rgba(0, 0, 0, 0.55),
+    inset 0 0 10px rgba(230, 57, 70, 0.15);
+
+  position: relative;
+  overflow: hidden;
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hero-card::before {
+  content: "";
+  position: absolute;
+  top: -35%;
+  left: -35%;
+  width: 170%;
+  height: 170%;
+
+  background: radial-gradient(
+    circle,
+    rgba(230, 57, 70, 0.18),
+    transparent 65%
+  );
+
+  opacity: 0.35;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.hero-card:hover::before {
+  opacity: 0.55;
+}
+
+.hero-card:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow:
+    0 0 18px rgba(230, 57, 70, 0.35),
+    inset 0 0 14px rgba(230, 57, 70, 0.22);
+}
+
+.hero-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 6px;
+}
+
+.hero-name {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.hero-feature {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.slider-btn {
+  background: rgba(18, 8, 20, 0.9);
+  border: 1px solid rgba(230, 57, 70, 0.6);
+  color: var(--text-main);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.slider-btn:hover {
+  background: rgba(230, 57, 70, 0.25);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 0 12px rgba(230, 57, 70, 0.6);
+}
+
+/* الفوتر */
+.site-footer {
+  border-top: 1px solid rgba(184, 156, 138, 0.3);
+  padding: 14px 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: radial-gradient(circle at top, #1b0b1f 0, #050308 60%);
+  
+  margin-top: auto;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Cinzel", serif;
+  font-size: 0.95rem;
+}
+
+.footer-logo img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* أيقونات محروقة */
+.footer-icon {
+  font-size: 1.4rem;
+  text-decoration: none;
+}
+
+.burnt-icon i {
+  color: #ffb4b4;
+  filter: sepia(0.6) hue-rotate(-10deg) drop-shadow(0 0 8px rgba(230, 57, 70, 0.8));
+  transition: transform var(--transition-fast), filter var(--transition-fast);
+}
+
+.burnt-icon i:hover {
+  transform: translateY(-1px) scale(1.05);
+  filter: sepia(0.4) hue-rotate(-5deg) drop-shadow(0 0 12px rgba(255, 180, 180, 1));
+}
+
+/* ريسبونسيف */
+@media (max-width: 768px) {
+  main {
+    padding-inline: 10px;
+  }
+
+  #side-menu {
+    width: 70%;
+  }
+  #side-menu {
+  position: fixed;
+  top: 60px; /* يبدأ بعد الشريط العلوي */
+  left: 0;
+  height: calc(100vh - 60px); /* يأخذ بقية الشاشة */
+}
+
+/* أنيميشن */
+@keyframes introFadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes griffinAppearBurn {
+  0% { opacity: 0; transform: scale(0.9); filter: brightness(0.3); }
+  40% { opacity: 1; transform: scale(1.05); filter: brightness(1.2); }
+  70% { opacity: 1; transform: scale(1); filter: brightness(1); }
+  100% { opacity: 0; transform: scale(0.9); filter: brightness(0.3) blur(2px); }
+}
+
+@keyframes titleFromAshes {
+  0% { opacity: 0; transform: scale(0.9); letter-spacing: 0.4em; }
+  60% { opacity: 1; transform: scale(1); letter-spacing: 0.2em; }
+  100% { opacity: 1; letter-spacing: 0.18em; }
+}
+
+@keyframes ashesRise {
+  0% { opacity: 0; transform: translate(-50%, 10px); }
+  40% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -10px); }
+}
+
+/* شبكة البطاقات */
+.branches-grid {
+  display: grid;
+  gap: 18px;
+  margin-top: 25px;
+  justify-items: center; /* ← يوسّط البطاقات داخل الأعمدة */
+}
+.branches-grid {
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: center;
+}
+
+/* البطاقة */
+.branch-card {
+  background: linear-gradient(135deg, #120814, #1b0b1f);
+  border: 1px solid rgba(230,57,70,0.4);
+  border-radius: 14px;
+  padding: 12px;
+  box-shadow: 0 0 14px rgba(0,0,0,0.6);
+  cursor: pointer;
+  overflow: hidden;
+  transition: 0.3s ease;
+  position: relative;
+}
+.branch-card {
+  display: flex;
+  flex-direction: column;
+}
+.branch-card {
+  margin-bottom: 20px;
+}
+
+.branch-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 18px rgba(230,57,70,0.7);
+}
+
+/* صورة الفرع */
+.branch-img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 10px rgba(230,57,70,0.4);
+}
+
+.branch-img {
+  width: 100%;
+  border-radius: 10px;
+  transition: transform 0.4s ease;
+}
+
+.branch-card:hover .branch-img {
+  transform: scale(1.05) translateY(-4px);
+}
+
+/* اسم الفرع */
+.branch-name {
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffb4b4;
+  font-weight: 600;
+  text-shadow: 0 0 6px rgba(230,57,70,0.6);
+}
+
+.branch-name i {
+  color: #ff7b7b;
+  font-size: 1.1rem;
+}
+
+/* تفاصيل البطاقة */
+.branch-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.45s ease;
+  padding-top: 0;
+}
+.branch-details {
+  flex-grow: 1;
+}
+.branch-card[data-expanded="true"] .branch-details {
+  max-height: 1000px; /* رقم كبير يسمح بالتمدد */
+}
+
+/* وصف الفرع */
+.branch-desc {
+  color: #b89c8a;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+.branch-desc {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.82);
+  margin-top: 10px;
+}
+
+.branch-desc {
+  border: 1px solid rgba(230,57,70,0.25);
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.15);
+}
+
+/* زر الزيارة — منسق بالكامل */
+.visit-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: auto;   /* ← يجبر الزر أن يبقى في الأسفل */
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-family: "Tajawal", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+
+  background: linear-gradient(135deg, #800020, #b3003c);
+  color: #fff;
+border: 1px solid rgba(179, 0, 60, 0.45);
+box-shadow: 0 0 10px rgba(179, 0, 60, 0.45);
+
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.35s ease;
+  box-shadow: 0 0 10px rgba(230,57,70,0.5);
+}
+
+/* التحويم */
+.visit-btn:hover {
+  box-shadow: 0 0 14px rgba(179, 0, 60, 0.55);
+  transform: translateY(-3px);
+}
+
+/* الضغط */
+.visit-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 6px rgba(230,57,70,0.35);
+}
+
+/* النص */
+.visit-text {
+  font-family: "Tajawal", sans-serif;
+font-weight: 500;
+  letter-spacing: 0.4px;
+  transition: transform 0.35s ease;
+}
+.visit-btn {
+  font-family: "Tajawal", sans-serif;
+  font-weight: 500; /* ← أنعم وأجمل */
+}
+
+/* أيقونة واتساب */
+.wa-iconn {
+  font-size: 0.8rem;
+  color: #ffb4c8;
+  opacity: 1 !important;          /* ← تظهر دائمًا */
+  transform: translateX(0) !important;
+  transition: all 0.35s ease;
+  filter: drop-shadow(0 0 4px rgba(255, 80, 120, 0.4));
+}
+
+/* عند التحويم تظهر الأيقونة ويتحرك النص */
+.visit-btn:hover .wa-icon {
+  transform: scale(1.15); /* ← تكبير بسيط */
+  color: #ff6f9f;          /* ← لون أجمل عند التحويم */
+  filter: drop-shadow(0 0 8px rgba(255, 80, 120, 0.7));
+}
+
+.visit-btn:hover .visit-text {
+  transform: translateX(2px);
+}
+
+.branch-details {
+  overflow: hidden;
+  transition: max-height 0.45s ease;
+}
+
+/* للفروع الثانوية*/
+
+.hero-title {
+  font-family: "Cairo", sans-serif; /* نفس خط عنوان البطاقة */
+  font-size: 2.6rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #ffeaea;
+
+  text-shadow:
+    0 0 6px rgba(255, 120, 120, 0.8),
+    0 0 14px rgba(255, 80, 80, 0.6),
+    0 0 22px rgba(255, 50, 50, 0.4);
+
+  animation: titleBurn 3s infinite ease-in-out;
+}
+
+/*العنوان الرئيسي للموقع*/
+.home-title {
+  font-family: "Cinzel Decorative", serif;
+  font-size: 2.4rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+
+  /* الصورة داخل النص (يُفضّل أن تكون حمم/ياقوت) */
+  background: url("images/title-texture.jpg") center/cover;
+  -webkit-background-clip: text;
+  color: transparent;
+
+  /* تعزيز وضوح الصورة داخل النص */
+  filter: brightness(1.2) contrast(1.3);
+
+  /* توهج ناري ياقوتي/نبيذي */
+  text-shadow:
+    0 0 6px rgba(180, 20, 40, 0.8),   /* ياقوتي */
+    0 0 14px rgba(255, 60, 20, 0.5),  /* حمم */
+    0 0 22px rgba(120, 0, 20, 0.4);   /* نبيذي */
+
+  animation: homeTitleGlow 3s infinite ease-in-out;
+}
+
+@keyframes homeTitleGlow {
+  0% {
+    text-shadow:
+      0 0 6px rgba(180, 20, 40, 0.8),
+      0 0 14px rgba(255, 60, 20, 0.5),
+      0 0 22px rgba(120, 0, 20, 0.4);
+  }
+
+  50% {
+    text-shadow:
+      0 0 10px rgba(255, 80, 20, 1),   /* نبضة حمم قوية */
+      0 0 20px rgba(200, 20, 40, 0.8), /* ياقوتي */
+      0 0 30px rgba(120, 0, 20, 0.6);  /* نبيذي */
+  }
+
+  100% {
+    text-shadow:
+      0 0 6px rgba(180, 20, 40, 0.8),
+      0 0 14px rgba(255, 60, 20, 0.5),
+      0 0 22px rgba(120, 0, 20, 0.4);
+  }
+}
+
+#menu-toggle {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px; /* مربع بحواف مرنة */
+  background: radial-gradient(circle at 30% 20%, #2a0d10 0, #0a0406 60%);
+  border: 1px solid rgba(120, 20, 30, 0.6);
+  box-shadow:
+    0 0 6px rgba(120, 20, 30, 0.6),
+    0 0 12px rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+#menu-toggle .bar {
+  width: 24px;
+  height: 3px;
+  background: #b41a2a; /* نبيذي واضح */
+  border-radius: 2px;
+  transition: 0.4s ease;
+}
+
+#menu-toggle.active .bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+#menu-toggle.active .bar:nth-child(2) {
+  opacity: 0;
+}
+
+#menu-toggle.active .bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+#menu-toggle:hover {
+  box-shadow:
+    0 0 10px rgba(180, 30, 40, 0.8),
+    0 0 18px rgba(120, 20, 30, 0.6);
+  transform: scale(1.05);
+}
+
+#menu-toggle:active {
+  transform: scale(0.92);
+}
+
+.hero-section-2 {
+  text-align: center;
+  padding: 40px 10px 30px;
+  border-bottom: 1px solid rgba(230,57,70,0.35);
+  margin-bottom: 20px;
+}
+
+.hero-title-2 {
+  font-family: "Cinzel", serif !important;
+}
+
+.hero-title-branches {
+  padding: 14px 18px;
+  border: 1px solid rgba(230,57,70,0.45);
+  border-radius: 8px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  height: auto; /* مهم */
+  text-align: center; /* مهم */
+}
+
+.hero-section-branches {
+  border-bottom: 1px solid rgba(230,57,70,0.35);
+  margin-bottom: 20px;
+  padding-bottom: 25px;
+}
+
+.wa-icon {
+  width: 18px;
+  height: 18px;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: all 0.35s ease;
+}
+
+.features-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  padding: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* شاشات التابلت */
+@media (max-width: 900px) {
+  .features-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* شاشات الهاتف */
+@media (max-width: 600px) {
+  .features-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.feature-card {
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(230,57,70,0.25);
+  border-radius: 12px;
+  padding: 18px;
+  transition: 0.35s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* تأثير التحويم */
+.feature-card:hover {
+  background: rgba(230,57,70,0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 0 12px rgba(230,57,70,0.35);
+}
+
+/* انكسار ضوئي */
+.feature-card::before {
+  content: "";
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.15), transparent);
+  transform: rotate(25deg);
+  transition: 0.6s ease;
+  opacity: 0;
+}
+
+.feature-card:hover::before {
+  top: 0;
+  left: 0;
+  opacity: 1;
+}
+
+.feature-name {
+  font-size: 1.3rem;
+  color: var(--accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* ================================
+   ⚡ FEATURE ICON — نسخة ديناميكية
+   ================================ */
+
+.feature-icon {
+  font-size: 1.6rem;                 /* حجم الأيقونة */
+  color: rgba(30,57,70,0.85);        /* اللون الأساسي */
+  margin-left: 2px;                  /* مسافة يسار */
+
+  /* ← ← ← تحريك الأيقونة */
+  transform: translate(-10px, 5px);    /* يمين/يسار/أعلى/أسفل */
+
+  /* تأثيرات ناعمة */
+  transition:
+    transform 0.25s ease,
+    color 0.25s ease,
+    filter 0.25s ease;
+}
+
+/* ================================
+   ⚡ Hover — تأثير ناعم
+   ================================ */
+
+.feature-icon:hover {
+  transform: translate(-9px, 5px) scale(1.12); /* رفع + تكبير بسيط */
+  color: #b3003c;                               /* لون ذهبي ناعم */
+  filter: drop-shadow(0 0 6px rgba(250, 25, 107, 0.55));
+}
+
+/* ================================
+   ⚡ تدرج لوني للأيقونة (اختياري)
+   ================================ */
+
+.feature-icon.gradient {
+  background: linear-gradient(45deg, #b3003c, #ffd86b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hover للتدرج */
+.feature-icon.gradient:hover {
+  filter: drop-shadow(0 0 8px rgba(255, 200, 120, 0.6));
+}
+
+.feature-details {
+  margin-top: 10px;
+  font-family: "Cairo", sans-serif;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.7;
+}
+
+.feature-tags {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.power-tag {
+  background: rgba(230,57,70,0.25);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  border: 1px solid rgba(230,57,70,0.35);
+}
+
+.feature-label {
+  position: absolute;
+  top: -10px;
+  right: 12px;
+  background: #120814;
+  padding: 0 6px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.arrow-icon {
+  transition: transform 0.35s ease;
+}
+
+.feature-card[data-expanded="true"] .arrow-icon {
+  transform: rotate(180deg);
+}
+
+.feature-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.45s ease;
+}
+
+.feature-card[data-expanded="true"] .feature-details {
+  max-height: 500px; /* يكفي لأي نص */
+}
+
+
+/* إطار الوصف داخل بطاقة الميزة */
+.feature-desc-frame {
+  border: 1px solid rgba(230,57,70,0.45);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: radial-gradient(circle at top, rgba(40, 15, 45, 0.9) 0%, rgba(20, 8, 25, 0.9) 60%);
+  margin-bottom: 12px;
+  position: relative;
+  margin-top: 12px;
+}
+
+/* كلمة نبذة فوق الإطار */
+.feature-desc-title {
+  position: absolute;
+  top: -10px;
+  right: 14px;
+  background: #140a16;
+  padding: 0 8px;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.75);
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+/* نص الوصف */
+.feature-desc {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.7;
+}
+
+.power-tag {
+  background: rgba(230,57,70,0.25);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  border: 1px solid rgba(230,57,70,0.35);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tag-icon {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.85);
+}
+
+/* الاحصائيات */
+/*--------------------------------------*
+  شبكة الإحصائيات
+*--------------------------------------*/
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  padding: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* تابلت */
+@media (max-width: 900px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* هاتف */
+@media (max-width: 600px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/*--------------------------------------*
+  بطاقة الإحصائية
+*--------------------------------------*/
+.stat-card {
+  background: linear-gradient(145deg, rgba(30,10,35,0.85), rgba(15,5,20,0.85));
+  border: 1px solid rgba(230,57,70,0.35);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+  transition: 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/*--------------------------------------*
+  تأثير التحويم
+*--------------------------------------*/
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    inset 0 0 18px rgba(230,57,70,0.25),   /* ← توهج داخلي */
+    0 0 14px rgba(230,57,70,0.35);         /* ← توهج خارجي خفيف */
+}
+
+/*--------------------------------------*
+  تأثير الضباب عند التحويم
+*--------------------------------------*/
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -40%;
+  width: 180%;
+  height: 180%;
+  background: radial-gradient(circle, rgba(179,0,60,0.35), transparent 50%);
+  opacity: 0;
+  transition: 0.5s ease;
+  filter: blur(18px);
+}
+
+.stat-card:hover::before {
+  opacity: 1;
+}
+
+/*--------------------------------------*
+  وسم الإحصائية
+*--------------------------------------*/
+.stat-tag {
+  display: flex;
+  justify-content: center;   /* توسيط أفقي */
+  align-items: center;        /* توسيط عمودي */
+  background: rgba(230,57,70,0.25);
+  border: 1px solid rgba(230,57,70,0.45);
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  margin: 10px 0;
+  color: rgba(255,255,255,0.85);
+}
+
+.stat-tag {
+  display: inline-flex;
+  width: 160px;     /* ← تحكم بالعرض */
+  height: 40px;     /* ← تحكم بالارتفاع */
+  padding: 0 10px;  /* ← padding أفقي فقط */
+  margin: 10px 0;   /* ← يحافظ على مكانه */
+}
+
+.stat-tag i {
+  font-size: 0.75rem;
+}
+
+.stat-number {
+  font-family: "Cinzel", serif;
+  font-size: 3rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #ffb3b3, #ffffff);
+  -webkit-background-clip: text;
+  color: transparent;
+  margin: 10px 0 6px 0;
+  display: inline-block;
+}
+
+.stat-title {
+  font-family: "Cairo", sans-serif;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.85);
+  margin: 0;   /* مهم جدًا */
+}
+
+.stat-number-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 4px;
+  margin: 10px 0 6px 0;
+}
+
+.stat-tag {
+  margin-top: 10px;
+}
+
+/* زر واتساب العائم */
+
+.floating-whatsapp {
+  position: fixed;
+  bottom: 22px;
+  right: 300px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08); /* شفاف ضبابي */
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(139, 0, 30, 0.55); /* نبيذي */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #25D366;
+  font-size: 2rem; /* تكبير الأيقونة */
+  z-index: 9999;
+  cursor: grab;
+  transition: 0.3s ease;
+}
+
+/* تحويم */
+.floating-whatsapp:hover {
+  box-shadow: 0 0 18px rgba(139, 0, 30, 0.75); /* توهج نبيذي */
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* عند السحب */
+.floating-whatsapp:active {
+  cursor: grabbing;
+}
+
+.wa-svg {
+  width: 28px;
+  height: 28px;
+  fill: #25D366; /* أو #fff لو تريده أبيض */
+  pointer-events: none; /* حتى لا يمنع السحب */
+}
+
+/* الأزرار */
+.slider-controls {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+}
+
+/* نافذة العرض */
+.heroes-viewport {
+  width: 100%;
+  max-width: 360px;
+  overflow: hidden;
+  position: relative;
+  padding-top: 18px; /* ← غيّر الرقم كما تريد */
+  padding-bottom: 18px;
+}
+
+.continue-btn {
+  font-family: "Cairo", sans-serif;
+  display: block;
+  margin: 20px auto -75px auto; /* ← يتحكم بالمسافة فوق وتحت */
+  background: linear-gradient(135deg, #2a0f2f, #1a081d);
+  color: #fff;
+  border: 1px solid rgba(230, 57, 70, 0.55);
+  padding: 12px 26px;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+
+  box-shadow: 0 0 12px rgba(230, 57, 70, 0.35);
+  transition: 0.25s ease;
+}
+.continue-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 18px rgba(230, 57, 70, 0.55);
+}
+
+.branches-icon-svg {
+  width: 2.2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--accent-soft);
+  margin-bottom: 6px;
+
+  text-shadow: 0 0 12px rgba(230,57,70,0.45);
+  filter: drop-shadow(0 0 10px rgba(120, 0, 30, 0.55));
+
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.branches-dragon-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  fill: url(#branchesDragonGradient);
+
+  /* موضعك المثالي */
+  transform: translateX(-15%) translateY(-42%) scale(3);
+  transform-origin: center;
+
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.branches-icon-svg:hover .branches-dragon-svg {
+  transform: translateX(-15%) translateY(-42%) scale(3.40);
+  filter: brightness(1.25) saturate(1.4);
+}
+
+.branches-icon-svg:hover {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 18px rgba(150, 0, 40, 0.75));
+}
+
+/* الجزء للميزات*/
+.blak-icon-svg {
+  width: 2.2rem;
+  height: 3.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--accent-soft);
+  margin-bottom: 6px;
+
+  text-shadow: 0 0 12px rgba(230,57,70,0.45);
+  filter: drop-shadow(0 0 10px rgba(120, 0, 30, 0.55));
+
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.blak-dragon-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  fill: url(#blakDragonGradient);
+  
+  /* موضعك المثالي */
+  transform: translateX(15%) translateY(32%) scale(5.95);
+  transform-origin: center;
+  
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.blak-icon-svg:hover .blak-dragon-svg {
+  transform: translateX(15%) translateY(32%) scale(6.35);
+  filter: brightness(1.25) saturate(1.4);
+}
+
+.blak-icon-svg:hover {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 18px rgba(150, 0, 40, 0.75));
+}
+
+/* الفهرس */
+
+.side-menu-title {
+  font-family: "Cairo", sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #ffeaea;
+
+  text-align: center;
+  letter-spacing: 0.03em;
+
+  /* التحكم بالمسافات */
+  padding-top: 6px;      /* المسافة فوق الخط */
+  padding-bottom: 22px;  /* المسافة بين النص والخط */
+  margin-bottom: 0;   /* المسافة بين الخط والقائمة */
+
+  border-bottom: 1px solid rgba(230, 57, 70, 0.35);
+
+  text-shadow:
+    0 0 6px rgba(255, 120, 120, 0.8),
+    0 0 14px rgba(255, 80, 80, 0.6),
+    0 0 22px rgba(255, 50, 50, 0.4);
+
+  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.side-menu-title:hover {
+  color: #ffb3c6; /* درجة أفتح */
+  transform: scale(1.05);
+
+  text-shadow:
+    0 0 10px rgba(255, 120, 140, 0.9),
+    0 0 18px rgba(255, 80, 100, 0.7),
+    0 0 28px rgba(255, 50, 70, 0.5);
+}
+
+.top-logo-svg {
+  width: 48px;       /* يمكنك تغييره */
+  height: auto;
+  fill: #ffebe6;     /* نفس لون النص القديم */
+
+  /* نفس تأثيرات الاحتراق */
+  filter: drop-shadow(0 0 6px rgba(255,70,40,0.8));
+  animation: burnFlicker 2.8s infinite ease-in-out;
+  pointer-events: none;
+}
+
+/* غلاف الشعار الجديد */
+.top-logo-svg-wrapper {
+  position: absolute;
+  z-index: 2000; /* أعلى من كل شيء */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 70px;   /* يمكنك تغييره */
+  height: 60px;
+
+  pointer-events: auto; /* لا يمنع الضغط على القائمة */
+  z-index: 10;
+}
+
+/* الشعار نفسه */
+.top-logo-svg {
+  width: 100%;
+  height: 100%;
+  fill: url(#griffinLogoGradient);
+
+  filter: drop-shadow(0 0 8px rgba(255, 80, 40, 0.9));
+  animation: svgBurnFlicker 2.8s infinite ease-in-out;
+}
+
+/* حركة التوهج */
+/* توهج ملكي فاخر */
+@keyframes svgBurnFlicker {
+  0%   { filter: drop-shadow(0 0 6px #b3003c); }
+  15%  { filter: drop-shadow(0 0 10px #99002f); }
+  30%  { filter: drop-shadow(0 0 14px #800020); }
+  45%  { filter: drop-shadow(0 0 8px #99002f); }
+  60%  { filter: drop-shadow(0 0 16px #b3003c); }
+  75%  { filter: drop-shadow(0 0 12px #800020); }
+  100% { filter: drop-shadow(0 0 6px #b3003c); }
+}
+
+/* انتقالات ناعمة */
+.top-logo-svg {
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+/* تأثير hover راقٍ */
+.top-logo-svg-wrapper:hover .top-logo-svg {
+  transform: scale(1.06);
+  filter: drop-shadow(0 0 18px #b3003c);
+}
+}
+
+
+/* ================================
+   ⚔️ Griffin Kingdom Tag System
+   ================================ */
+
+/* ================================
+   ⚡ LOL TAG — نسخة صغيرة مناسبة للنص
+   ================================ */
+
+.lol-tag {
+  --tag-bg: rgba(18, 8, 20, 0.85);
+  --tag-border: rgba(230, 57, 70, 0.6);
+  --tag-color: #ffd86b;
+  --tag-radius: 80px;          /* أصغر */
+  --tag-padding-y: 6px;       /* ↓↓ تم تقليلها */
+  --tag-padding-x: 8px;       /* ↓↓ تم تقليلها */
+  --tag-font-size: 0.70rem;   /* أصغر قليلاً */
+  --tag-glow: rgba(255, 200, 120, 0.25);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  padding: var(--tag-padding-y) var(--tag-padding-x);
+  border-radius: var(--tag-radius);
+  background: var(--tag-bg);
+  border: 1px solid var(--tag-border);
+  color: var(--tag-color);
+  font-size: var(--tag-font-size);
+
+  box-shadow: 0 0 4px var(--tag-glow);
+  overflow: visible;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.lol-tag:hover {
+  transform: translateY(-2px) scale(1.04);
+  border-color: rgba(255, 200, 120, 0.9);
+  box-shadow:
+    0 0 8px rgba(255, 220, 150, 0.45),
+    0 0 14px rgba(255, 180, 90, 0.35);
+}
+
+/* ================================
+   ⚡ SVG Icon Control — نسخة صغيرة
+   ================================ */
+
+.lol-svg {
+  width: 22px;       /* ↓↓ أصغر */
+  height: 22px;
+  fill: currentColor;
+
+  transform: scale(2);   /* ↓↓ تصغير SVG الضخم */
+  transform-origin: center;
+
+  display: block;
+
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+.lol-tag:hover .lol-svg {
+  transform: scale(2.12) rotate(4deg);
+  filter: drop-shadow(0 0 4px rgba(255, 200, 120, 0.7));
+}
+
+/* مكان الوسم داخل البطاقة */
+.hero-icon-tag {
+  margin-top: -3px; /* أصغر */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* محتوى الـ SVG داخل الإطار */
+.elite-svg-sk {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+  display: block;
+
+  /* هنا التكبير الحقيقي */
+  transform: scale(2.5);          /* كبّر أو صغّر الرقم */
+  transform-origin: center center; /* يكبّر من المنتصف */
+}
+.elite-svg-wrapper-sk {
+  position: relative;
+
+  /* ← ← ← هنا تحرك الـ SVG */
+  transform: translate(17px, -16px); /* غيّر القيم كما تريد */
+}
+
+
+/* محتوى الـ SVG داخل الإطار */
+.elite-svg-sn {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+  display: block;
+
+  /* هنا التكبير الحقيقي */
+  transform: scale(1.2);          /* كبّر أو صغّر الرقم */
+  transform-origin: center center; /* يكبّر من المنتصف */
+}
+.elite-svg-wrapper-sn {
+  position: relative;
+
+  /* ← ← ← هنا تحرك الـ SVG */
+  transform: translate(0px, -1px); /* غيّر القيم كما تريد */
+}
+
+
+/* محتوى الـ SVG داخل الإطار */
+.elite-svg-kn {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+  display: block;
+
+  /* هنا التكبير الحقيقي */
+  transform: scale(1.4);          /* كبّر أو صغّر الرقم */
+  transform-origin: center center; /* يكبّر من المنتصف */
+}
+.elite-svg-wrapper-kn {
+  position: relative;
+
+  /* ← ← ← هنا تحرك الـ SVG */
+  transform: translate(1px, -1px); /* غيّر القيم كما تريد */
+}
+
+
+/* محتوى الـ SVG داخل الإطار */
+.elite-svg-ms {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+  display: block;
+
+  /* هنا التكبير الحقيقي */
+  transform: scale(1.8);          /* كبّر أو صغّر الرقم */
+  transform-origin: center center; /* يكبّر من المنتصف */
+}
+.elite-svg-wrapper-ms {
+  position: relative;
+
+  /* ← ← ← هنا تحرك الـ SVG */
+  transform: translate(5px, 5px); /* غيّر القيم كما تريد */
+}
+
+
+.hero-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* أو space-between حسب رغبتك */
+  gap: 76px; /* المسافة بين الاسم والوسم */
+}
+
+.hero-divider {
+  width: 99%;
+  height: 1px;
+  margin: 6px auto 8px auto;
+  margin-top: 6px;
+  margin-bottom: 8px;
+
+  background: linear-gradient(
+    to right,
+    transparent,
+    #b3003c,
+    #ff0044,
+    #b3003c,
+    transparent
+  );
+
+  border-radius: 50px;
+  opacity: 0.8;
+}
+
+
+/* ================================
+ بطاقة 1
+   ⚡ TAG — نسخة ديناميكية تلقائية
+   ================================ */
+
+.lolo-tag {
+  /* متغيرات قابلة للتعديل */
+  --tag-bg: rgba(18, 8, 20, 0.85);
+  --tag-border: rgba(230, 57, 70, 0.6);
+  --tag-color: #FF2DAA;
+  --tag-radius: 80px;
+  --tag-padding-y: 6px;
+  --tag-padding-x: 10px;
+  --tag-font-size: 0.70rem;
+  --tag-glow: rgba(255, 200, 120, 0.25);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: var(--tag-padding-y) var(--tag-padding-x);
+  border-radius: var(--tag-radius);
+  background: var(--tag-bg);
+  border: 1px solid var(--tag-border);
+  color: var(--tag-color);
+  font-size: var(--tag-font-size);
+
+  box-shadow: 0 0 4px var(--tag-glow);
+  overflow: visible;
+
+  /* ← ← ← تحريك الوسم كاملًا */
+  transform: translate(0px, 0px);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.lolo-tag:hover {
+  transform: translate(0px, -2px) scale(1.04);
+  border-color: #b3003c;
+  box-shadow:
+    0 0 8px rgba(179, 0, 60, 0.45),
+    0 0 14px rgba(128, 0, 32, 0.35);
+}
+
+/* ================================
+   ⚡ SVG WRAP — التوسيط التلقائي
+   ================================ */
+
+.lolo-svg-wrap {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;     /* ← وسط عمودي */
+  justify-content: center; /* ← وسط أفقي */
+
+  /* ← ← ← تحريك SVG داخل الوسم */
+  transform: translate(-5px, -7px);
+}
+
+/* ================================
+   ⚡ SVG Icon — ديناميكي
+   ================================ */
+
+.lolo-svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+
+  /* ← ← ← تكبير/تصغير SVG */
+  transform: scale(1.8);
+  transform-origin: center;
+
+  display: block;
+
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+.lolo-tag:hover .lolo-svg {
+  transform: scale(2.1) rotate(4deg);
+  filter: drop-shadow(0 0 4px rgba(1501, 0, 40, 0.95));
+}
+
+/* ================================
+   ⚡ مكان الوسم داخل البطاقة
+   ================================ */
+
+.hero-icon-tag {
+  display: inline-flex;
+
+  /* ← ← ← تحريك الوسم داخل البطاقة */
+  margin-top: 0px;
+  margin-left: 6px;
+}
+
+
+/* ================================
+ بطاقة 2
+   ⚡ TAG — نسخة ديناميكية تلقائية
+   ================================ */
+
+.lili-tag {
+  /* متغيرات قابلة للتعديل */
+  --tag-bg: rgba(18, 8, 20, 0.85);
+  --tag-border: rgba(230, 57, 70, 0.6);
+  --tag-color: #87CEEB;
+  --tag-radius: 80px;
+  --tag-padding-y: 6px;
+  --tag-padding-x: 10px;
+  --tag-font-size: 0.70rem;
+  --tag-glow: rgba(255, 200, 120, 0.25);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: var(--tag-padding-y) var(--tag-padding-x);
+  border-radius: var(--tag-radius);
+  background: var(--tag-bg);
+  border: 1px solid var(--tag-border);
+  color: var(--tag-color);
+  font-size: var(--tag-font-size);
+
+  box-shadow: 0 0 4px var(--tag-glow);
+  overflow: visible;
+
+  /* ← ← ← تحريك الوسم كاملًا */
+  transform: translate(0px, 0px);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.lili-tag:hover {
+  transform: translate(0px, -2px) scale(1.04);
+  border-color: #b3003c;
+  box-shadow:
+    0 0 8px rgba(179, 0, 60, 0.45),
+    0 0 14px rgba(128, 0, 32, 0.35);
+}
+
+/* ================================
+   ⚡ SVG WRAP — التوسيط التلقائي
+   ================================ */
+
+.lili-svg-wrap {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;     /* ← وسط عمودي */
+  justify-content: center; /* ← وسط أفقي */
+
+  /* ← ← ← تحريك SVG داخل الوسم */
+  transform: translate(-3px, -5px);
+}
+
+/* ================================
+   ⚡ SVG Icon — ديناميكي
+   ================================ */
+
+.lili-svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+
+  /* ← ← ← تكبير/تصغير SVG */
+  transform: scale(1.6);
+  transform-origin: center;
+
+  display: block;
+
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+.lili-tag:hover .lili-svg {
+  transform: scale(1.8) rotate(4deg);
+  filter: drop-shadow(0 0 4px rgba(1501, 0, 40, 0.95));
+}
+
+/* ================================
+   ⚡ مكان الوسم داخل البطاقة
+   ================================ */
+
+.hero-icon-tag {
+  display: inline-flex;
+
+  /* ← ← ← تحريك الوسم داخل البطاقة */
+  margin-top: 0px;
+  margin-left: 6px;
+}
+
+
+
+/* ================================
+3 بطاقة
+   ⚡ TAG — نسخة ديناميكية تلقائية
+   ================================ */
+
+.lklk-tag {
+  /* متغيرات قابلة للتعديل */
+  --tag-bg: rgba(18, 8, 20, 0.85);
+  --tag-border: rgba(230, 57, 70, 0.6);
+  --tag-color: #F0F8FF;
+  --tag-radius: 80px;
+  --tag-padding-y: 6px;
+  --tag-padding-x: 10px;
+  --tag-font-size: 0.70rem;
+  --tag-glow: rgba(255, 200, 120, 0.25);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: var(--tag-padding-y) var(--tag-padding-x);
+  border-radius: var(--tag-radius);
+  background: var(--tag-bg);
+  border: 1px solid var(--tag-border);
+  color: var(--tag-color);
+  font-size: var(--tag-font-size);
+
+  box-shadow: 0 0 4px var(--tag-glow);
+  overflow: visible;
+
+  /* ← ← ← تحريك الوسم كاملًا */
+  transform: translate(0px, 0px);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.lklk-tag:hover {
+  transform: translate(0px, -2px) scale(1.04);
+  border-color: #b3003c;
+  box-shadow:
+    0 0 8px rgba(179, 0, 60, 0.45),
+    0 0 14px rgba(128, 0, 32, 0.35);
+}
+
+/* ================================
+   ⚡ SVG WRAP — التوسيط التلقائي
+   ================================ */
+
+.lklk-svg-wrap {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;     /* ← وسط عمودي */
+  justify-content: center; /* ← وسط أفقي */
+
+  /* ← ← ← تحريك SVG داخل الوسم */
+  transform: translate(-3px, -5.6px);
+}
+
+/* ================================
+   ⚡ SVG Icon — ديناميكي
+   ================================ */
+
+.lklk-svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+
+  /* ← ← ← تكبير/تصغير SVG */
+  transform: scale(1.5);
+  transform-origin: center;
+
+  display: block;
+
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+.lklk-tag:hover .lklk-svg {
+  transform: scale(1.7) rotate(4deg);
+  filter: drop-shadow(0 0 4px rgba(1501, 0, 40, 0.95));
+}
+
+/* ================================
+   ⚡ مكان الوسم داخل البطاقة
+   ================================ */
+
+.hero-icon-tag {
+  display: inline-flex;
+
+  /* ← ← ← تحريك الوسم داخل البطاقة */
+  margin-top: 0px;
+  margin-left: 6px;
+}
+
+
+
+
+
+
+.lok-icon {
+  font-size: 1.9rem;                 /* حجم الأيقونة */
+  color: rgba(30,57,70,0.85);        /* اللون الأساسي */
+  margin-left: 2px;                  /* مسافة يسار */
+
+  /* ← ← ← تحريك الأيقونة */
+  transform: translate(0px, 5px);    /* يمين/يسار/أعلى/أسفل */
+
+  /* تأثيرات ناعمة */
+  transition:
+    transform 0.25s ease,
+    color 0.25s ease,
+    filter 0.25s ease;
+}
+
+/* ================================
+   ⚡ Hover — تأثير ناعم
+   ================================ */
+
+.lok-icon:hover {
+  transform: translate(0px, 5px) scale(1.12); /* رفع + تكبير بسيط */
+  color: #b3003c;                               /* لون ذهبي ناعم */
+  filter: drop-shadow(0 0 6px rgba(250, 25, 107, 0.55));
+}
+
+/* ================================
+   ⚡ تدرج لوني للأيقونة (اختياري)
+   ================================ */
+
+.lok-icon.gradient {
+  background: linear-gradient(45deg, #b3003c, #ffd86b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hover للتدرج */
+.lok-icon.gradient:hover {
+  filter: drop-shadow(0 0 8px rgba(250, 20, 120, 0.6));
+}
+
+
+.kat-title-branches {
+  padding: 14px 18px;
+  border: 1px solid rgba(230,57,70,0.45);
+  border-radius: 8px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  height: auto; /* مهم */
+  text-align: center; /* مهم */
+}
+
+
+/* ================================
+   ⚡ رقم الإحصائية (sub)
+   ================================ */
+
+.stat-row {
+  display: flex;
+  flex-direction: column;   /* ← العناصر فوق بعض */
+  align-items: center;      /* ← توسيط أفقي */
+  justify-content: center;  /* ← توسيط عمودي */
+  gap: 2px;                 /* مسافة بين العناصر */
+}
+
+/* رقم الإحصائية */
+.sub {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffd86b;
+  margin-top: 4px;
+  transform: translate(0, 0);
+  transition: 0.25s ease;
+}
+
+.sub:hover {
+  transform: translate(0, -1px);
+  filter: drop-shadow(0 0 4px rgba(255, 216, 107, 0.45));
+}
+
+/* عنوان صغير */
+.sub-title {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.85);
+}
+
+/* أيقونة */
+.stat-row i {
+  font-size: 1.2rem;
+  color: #ffd86b;
+}
+
+
+
+.kat-box-branches {
+  padding: 14px 18px;
+  border: 1px solid rgba(230,57,70,0.45);
+  border-radius: 8px;
+
+  /* ← لجعلها مربعة */
+  width: 120px;          /* يمكنك تغييره */
+  height: 120px;         /* نفس القيمة = مربع */
+
+  display: flex;
+  flex-direction: column; /* العناصر فوق بعض */
+  justify-content: center; /* توسيط عمودي */
+  align-items: center;     /* توسيط أفقي */
+
+  text-align: center;
+  line-height: 1.2;
+
+  background: rgba(18, 8, 20, 0.35);
+  backdrop-filter: blur(4px);
+
+  transition: 0.25s ease;
+}
+
+.kat-box-branches:hover {
+  border-color: rgba(255, 20, 1, 0.37);
+  box-shadow: 0 0 10px rgba(255, 20, 120, 0.35);
+  transform: translateY(-3px);
+}
+
+.kat-box-branches {
+  margin: 0 auto;
+}
