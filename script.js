@@ -32,7 +32,8 @@ menuItems.forEach((btn) => {
 });
 
 // بطاقات النخبة (تمدد عند الضغط)
-const eliteCards = document.querySelectorAll(".elite-card");
+// بطاقات النخبة (تمدد عند الضغط)
+const eliteCards = document.querySelectorAll(".elite-card, .eelite-card");
 
 eliteCards.forEach((card) => {
   card.addEventListener("click", () => {
@@ -335,6 +336,8 @@ centerCard(0);
 document.getElementById("continue-btn").addEventListener("click", () => {
   document.getElementById("menu-toggle").click();
 });
+
+
 
 
 drawEmbers();
